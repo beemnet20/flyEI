@@ -15,6 +15,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PreviewIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
+import LinkIcon from '@mui/icons-material/Link';
+import Link from 'next/link';
 
 function ComponentListItem({ text }) {
   const [openModal, setOpenModal] = useState(false);
@@ -45,31 +47,27 @@ function ComponentListItem({ text }) {
   // Snackbar action buttons
   const snackbarAction = (
     <>
-      <Button color="secondary" size="small" onClick={handleCloseSnackbar}>
+      <Button color='secondary' size='small' onClick={handleCloseSnackbar}>
         UNDO
       </Button>
       <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
+        size='small'
+        aria-label='close'
+        color='inherit'
         onClick={handleCloseSnackbar}
       >
-        <CloseIcon fontSize="small" />
+        <CloseIcon fontSize='small' />
       </IconButton>
     </>
   );
 
+  // Construct the view document link
+  const viewDocLink = `https://ui.shadcn.com/docs/components/${text.replace(/\s+/g, '-').toLowerCase()}`;
+
   return (
     <>
-      <ListItemButton
-        onClick={handleMenuOpen}
-        sx={{ pl: 3, py: 0 }}
-        // button
-      >
+      <ListItemButton onClick={handleMenuOpen} sx={{ pl: 3, py: 0 }}>
         <ListItemText primary={text} />
-        {/* <IconButton aria-label="menu" size="small" >
-          <MoreVertIcon />
-        </IconButton> */}
       </ListItemButton>
 
       {/* Menu */}
@@ -79,12 +77,18 @@ function ComponentListItem({ text }) {
         onClose={handleCloseMenu}
       >
         <MenuItem onClick={handlePreviewClick}>
-          <PreviewIcon fontSize="small" sx={{ mr: 1 }} />
+          <PreviewIcon fontSize='small' sx={{ mr: 1 }} />
           Preview
         </MenuItem>
         <MenuItem onClick={handleAddClick}>
-          <AddIcon fontSize="small" sx={{ mr: 1 }} />
+          <AddIcon fontSize='small' sx={{ mr: 1 }} />
           Add
+        </MenuItem>
+        <MenuItem>
+          <LinkIcon fontSize='small' sx={{ mr: 1 }} />
+          <Link href={viewDocLink} target='_blank' >
+            View docs
+          </Link>
         </MenuItem>
       </Menu>
 
@@ -101,8 +105,8 @@ function ComponentListItem({ text }) {
       <Modal
         open={openModal}
         onClose={handleCloseModal}
-        aria-labelledby="preview-modal-title"
-        aria-describedby="preview-modal-description"
+        aria-labelledby='preview-modal-title'
+        aria-describedby='preview-modal-description'
       >
         <Box
           sx={{
@@ -117,7 +121,7 @@ function ComponentListItem({ text }) {
             p: 4,
           }}
         >
-          <Typography id="preview-modal-title" variant="h6" component="h2">
+          <Typography id='preview-modal-title' variant='h6' component='h2'>
             Preview <span style={{ color: '#d8565c' }}>{text}</span>
           </Typography>
           <Box
@@ -130,14 +134,18 @@ function ComponentListItem({ text }) {
           />
           <div style={{ display: 'flex', flexDirection: 'row-reverse' }}>
             <Button
-              variant="contained"
-              color="primary"
+              variant='contained'
+              color='primary'
               onClick={handleAddClick}
               sx={{ ml: 1 }}
             >
               Add
             </Button>
-            <Button variant="outlined" color="primary" onClick={handleCloseModal}>
+            <Button
+              variant='outlined'
+              color='primary'
+              onClick={handleCloseModal}
+            >
               Cancel
             </Button>
           </div>

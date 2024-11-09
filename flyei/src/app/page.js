@@ -106,7 +106,7 @@ export default function Home() {
 
       <Box sx={{ p: 2 }}>
         {page}
-        <BasicGrid page={page}/>
+        <BasicGrid page={page} device={device}/>
       </Box>
     </>
   );
