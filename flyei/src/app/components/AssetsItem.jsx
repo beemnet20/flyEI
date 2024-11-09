@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  ListItem,
+  ListItemButton,
   ListItemText,
   Modal,
   Box,
@@ -11,7 +11,7 @@ import {
   IconButton,
   Grid,
   Snackbar,
-  Stack
+  Stack,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -40,15 +40,17 @@ function AssetsItem({ text }) {
 
   // Add and remove handlers
   const handleAddAsset = (index, type) => {
-    setSnackbarMessage(`${type.charAt(0).toUpperCase() + type.slice(1)} ${index + 1} added`);
+    setSnackbarMessage(
+      `${type.charAt(0).toUpperCase() + type.slice(1)} ${index + 1} added`
+    );
     setOpenSnackbar(true);
   };
 
   const handleRemoveAsset = (index, type) => {
     if (type === 'image') {
-      setImages(images.filter((_, i) => i !== index));
+      setImages((prevImages) => prevImages.filter((_, i) => i !== index));
     } else if (type === 'video') {
-      setVideos(videos.filter((_, i) => i !== index));
+      setVideos((prevVideos) => prevVideos.filter((_, i) => i !== index));
     }
   };
 
@@ -61,9 +63,9 @@ function AssetsItem({ text }) {
 
   return (
     <>
-      <ListItem button onClick={handleOpenModal}>
+      <ListItemButton onClick={handleOpenModal}>
         <ListItemText primary={text} />
-      </ListItem>
+      </ListItemButton>
 
       {/* Modal */}
       <Modal
@@ -89,7 +91,11 @@ function AssetsItem({ text }) {
             <Typography id="assets-modal-title" variant="h6">
               Manage Assets
             </Typography>
-            <IconButton aria-label="close" onClick={handleCloseModal}>
+            <IconButton
+              aria-label="close"
+              onClick={handleCloseModal}
+              sx={{ padding: 0 }}
+            >
               <CloseIcon />
             </IconButton>
           </Box>
@@ -121,22 +127,24 @@ function AssetsItem({ text }) {
                       }}
                     >
                       <Typography variant="caption">Image {index + 1}</Typography>
-                      <IconButton
-                        aria-label="add"
-                        size="small"
-                        color="primary"
-                        onClick={() => handleAddAsset(index, 'image')}
-                      >
-                        <AddIcon fontSize="small" />
-                      </IconButton>
-                      <IconButton
-                        aria-label="remove"
-                        size="small"
-                        color="secondary"
-                        onClick={() => handleRemoveAsset(index, 'image')}
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
+                      <Stack direction="row" spacing={1}>
+                        <IconButton
+                          aria-label="add"
+                          size="small"
+                          color="primary"
+                          onClick={() => handleAddAsset(index, 'image')}
+                        >
+                          <AddIcon fontSize="small" />
+                        </IconButton>
+                        {/* <IconButton
+                          aria-label="remove"
+                          size="small"
+                          color="secondary"
+                          onClick={() => handleRemoveAsset(index, 'image')}
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton> */}
+                      </Stack>
                     </Box>
                   </Grid>
                 ))}
@@ -160,23 +168,23 @@ function AssetsItem({ text }) {
                       }}
                     >
                       <Typography variant="caption">Video {index + 1}</Typography>
-                      <Stack direction='horizontal'>
-                      <IconButton
-                        aria-label="add"
-                        size="small"
-                        color="primary"
-                        onClick={() => handleAddAsset(index, 'video')}
-                      >
-                        <AddIcon fontSize="small" />
-                      </IconButton>
-                      <IconButton
-                        aria-label="remove"
-                        size="small"
-                        color="secondary"
-                        onClick={() => handleRemoveAsset(index, 'video')}
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
+                      <Stack direction="row" spacing={1}>
+                        <IconButton
+                          aria-label="add"
+                          size="small"
+                          color="primary"
+                          onClick={() => handleAddAsset(index, 'video')}
+                        >
+                          <AddIcon fontSize="small" />
+                        </IconButton>
+                        {/* <IconButton
+                          aria-label="remove"
+                          size="small"
+                          color="secondary"
+                          onClick={() => handleRemoveAsset(index, 'video')}
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton> */}
                       </Stack>
                     </Box>
                   </Grid>
@@ -201,7 +209,9 @@ function AssetsItem({ text }) {
                 ) : (
                   <>
                     <UploadFileIcon sx={{ fontSize: 40, mb: 1 }} />
-                    <Typography>Drag & drop some files here, or click to select files</Typography>
+                    <Typography>
+                      Drag & drop some files here, or click to select files
+                    </Typography>
                     <Button variant="contained" sx={{ mt: 2 }}>
                       Select Files
                     </Button>
